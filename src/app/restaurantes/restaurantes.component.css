@@ -1,0 +1,15 @@
+.no-padding-left{
+    padding-left: 0px !important;
+}
+
+.no-padding-right{
+    padding-right: 0px !important;
+}
+
+.align-left{
+    text-align: left !important;
+}
+
+.width-10{
+    width:10% !important;
+}

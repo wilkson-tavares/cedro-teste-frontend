@@ -1,0 +1,23 @@
+<form class="mdl-grid" #f="ngForm" (ngSubmit)="onSubmit(f)">
+  <div class="mdl-cell mdl-cell--12-col mdl-cell--12-col-phone mdl-cell--12-col-tablet mdl-shadow--2dp">
+    <div class="mdl-textfield mdl-js-textfield mdl-cell mdl-cell--12-col mdl-cell--12-col-phone mdl-cell--12-col-tablet">
+      <input class="mdl-textfield__input" type="text" name="id" disabled [(ngModel)]="restauranteForm.id">
+      <label class="mdl-textfield__label" for="id">Código</label>
+    </div>
+    <div class="mdl-textfield mdl-js-textfield mdl-cell mdl-cell--12-col mdl-cell--12-col-phone mdl-cell--12-col-tablet"
+      [class.is-invalid]="nome.invalid && nome.touched">
+      <input class="mdl-textfield__input" type="text" name="nome" required [(ngModel)]="restauranteForm.nome" #nome="ngModel">
+      <label class="mdl-textfield__label" for="nome">Nome</label>
+    </div>
+
+    <div class="mdl-cell mdl-cell--12-col mdl-cell--12-col-phone mdl-cell--12-col-tablet">
+      <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary" type="submit">
+        <i class="material-icons">&#xE161;</i> Salvar
+      </button>
+      <a class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-color--red-900 mdl-color-text--white" (click)="onCancel()">
+        <i class="material-icons">&#xE5CD;</i> Cancelar
+      </a>
+    </div>
+  </div>
+
+</form>

@@ -1,0 +1,16 @@
+.demo-card-image.mdl-card {
+    width: 60%;
+    height: 320px;
+    background: url('../../assets/image_card.jpg');
+    background-repeat: no-repeat;
+}
+.demo-card-image > .mdl-card__actions {
+    height: 15%;
+    padding: 16px;
+    background: rgba(0, 0, 0, 0.2);
+  }
+.demo-card-image__filename {
+    color: #fff;
+    font-size: 14px;
+    font-weight: 500;
+}
