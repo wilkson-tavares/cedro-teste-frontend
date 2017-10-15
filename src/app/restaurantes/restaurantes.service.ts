@@ -1,51 +1,35 @@
-import { RestaurantesModel } from './restaurantes.model';
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { Http, Response, Headers, RequestOptions } from '@angular/http';
+import { Observable } from 'rxjs/Observable';
+
+import { RestaurantesModel } from './restaurantes.model';
+
 import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/catch';
 
 @Injectable()
 export class RestaurantesService {
 
-	private restaurantes: RestaurantesModel[] = [
-		{ id: 1, nome: 'Barollo' },
-		{ id: 2, nome: 'Minas Tchê' },
-		{ id: 3, nome: 'Porto Alegre' }
-	];
-
-	getRestaurantes() {
-		return this.restaurantes;
+	private options = new RequestOptions({ headers: new Headers({ 'Content-Type': 'application/json' })});
+	private restauranteURL = 'http://localhost:50589/api/restaurante/';
+	private restaurantes: RestaurantesModel[] = [];
+	
+	getRestaurantes(){
+		return this.http.get(`${this.restauranteURL}get`)
+			.map((res: Response) => res.json())
+			.catch((error:any) => Observable.throw(error.json().error || 'Server error'));
 	}
 
-	getRestaurante(id: number) {
-		for (let i = 0; i < this.restaurantes.length; i++) {
-			if (this.restaurantes[i].id == id)
-				return this.restaurantes[i];
-		}
-		return null;
+	getRestaurante(id: number){
+		return this.http.get(`${this.restauranteURL}get/${id}`)
+			.map((res: Response) => res.json())
+			.catch((error:any) => Observable.throw(error.json().error || 'Server error'));
 	}
 
-	setRestaurante(param: RestaurantesModel) {
-		this.http.get(`//viacep.com.br/ws/38413288/json/`)
-			.map(dados => dados.json())
-			.subscribe(dados => console.log(dados));
-
-		// if (param.id == undefined || param.id == 0) {
-		// 	this.restaurantes.sort(function (a, b) {
-		// 		return a.id < b.id ? -1 : a.id > b.id ? 1 : 0;
-		// 	});
-
-		// 	param.id = this.restaurantes[this.restaurantes.length - 1].id + 1;
-		// 	this.restaurantes.push(param);
-		// }
-		// else {
-		// 	this.restaurantes.forEach(
-		// 		(item: RestaurantesModel) => {
-		// 			if (item.id == param.id) {
-		// 				item.nome = param.nome;
-		// 			}
-		// 		}
-		// 	);
-		// }
+	setRestaurante(param: RestaurantesModel): Observable<RestaurantesModel>{
+		return this.http.post(`${this.restauranteURL}`, JSON.stringify(param), null)
+			.map((res: Response) => res.json())
+			.catch((error:any) => Observable.throw(error.json().error || 'Server error'));
 	}
 
 	constructor(private http: Http) { }

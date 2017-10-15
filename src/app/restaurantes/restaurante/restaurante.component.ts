@@ -1,3 +1,4 @@
+import { Observable } from 'rxjs/Observable';
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
@@ -12,7 +13,7 @@ import { RestaurantesModel } from './../restaurantes.model';
 })
 export class RestauranteComponent implements OnInit, OnDestroy {
 
-	restauranteForm: RestaurantesModel;
+	restauranteForm: RestaurantesModel = new RestaurantesModel();
 	inscricao: Subscription;
 
 	constructor(
@@ -24,8 +25,12 @@ export class RestauranteComponent implements OnInit, OnDestroy {
 	ngOnInit() {
 		this.inscricao = this.route.params.subscribe(
 			(params: any) => {
-				let id = params['id'] || 0;
-				this.restauranteForm = Object.assign({}, this.restauranteService.getRestaurante(id));
+				let id: number = params['id'] || 0;
+				if (id != 0){
+					this.restauranteService.getRestaurante(id).subscribe((restaurante: RestaurantesModel) =>{
+						this.restauranteForm = restaurante[0];
+					});
+				}
 			}
 		);
 	}
@@ -35,7 +40,9 @@ export class RestauranteComponent implements OnInit, OnDestroy {
 	}
 
 	onSubmit(form) {
-		this.restauranteService.setRestaurante(null);
+		let ob: Observable<RestaurantesModel>;
+		let restaurante: RestaurantesModel = {id: form.value.id, nome: form.value.nome};
+		ob = this.restauranteService.setRestaurante(restaurante);
 	}
 
 	onCancel() {

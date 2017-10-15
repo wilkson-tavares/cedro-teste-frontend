@@ -20,10 +20,15 @@ export class RestaurantesComponent implements OnInit {
   ) { }
 
   ObterRestaurantes(){
-    if (this.restaurantes.length === 0 || this.filtro === undefined || this.filtro.trim() === ''){
-      return this.restaurantes;
+    if (this.restaurantes.length === 0){
+      this.restaurantesService.getRestaurantes().subscribe((restaurantes: RestaurantesModel[]) =>{
+        this.restaurantes = restaurantes;
+      });
     }
 
+    if (this.filtro === undefined || this.filtro.trim() === ''){
+      return this.restaurantes;
+    }
     return this.restaurantes.filter((v) => {
       if (v.nome.toLowerCase().indexOf(this.filtro.toLowerCase()) >= 0){
         return true;
@@ -36,9 +41,10 @@ export class RestaurantesComponent implements OnInit {
     this.router.navigate(['/restaurantes', '0']);
   }
 
-
   ngOnInit() {
-    this.restaurantes = this.restaurantesService.getRestaurantes();
+    this.restaurantesService.getRestaurantes().subscribe((restaurantes: RestaurantesModel[]) =>{
+      this.restaurantes = restaurantes;
+    });
   }
 
 }
